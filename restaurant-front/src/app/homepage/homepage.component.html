@@ -1,0 +1,122 @@
+<div class="col-md-12 p-zero overflow-hidden">
+    <div class="col-md-12 header-div">
+        <img alt="SmartQ" src="https://he-s3.s3.amazonaws.com/media/cache/ba/36/ba3673e144c41e58adfbc716db8be88d.png">
+        <span class="header-text">Welcome to SmartQ Restaurant </span>
+    </div>
+    <div class="col-md-12 content-div">
+        <div class="col-md-12 bg-c-F9F9F9 search-div row">
+            <div class="col-md-10">
+                <input type="search" [(ngModel)]="searchtext" placeholder="Search for restaurants or cuisines..."
+                    class="col-md-12 search-box">
+                <span class="search-icon" title="search" (click)="searchRestaurant(searchtext)"><i class="fa fa-search p-absolute m-t-6px"></i></span>
+            </div>
+            <button class="col-md-1 m-r-10px" (click)="searchRestaurant(searchtext)">Search</button>            
+        </div>
+        <div class="rest-content col-md-12 row p-zero">
+            <ng-container *ngIf="restaurantList">
+                <div class="col-md-4 card-div p-zero" *ngFor="let rest of restaurantList; let index=index">
+                    <div class="card-container" (click)="displayRestaurantDetail(rest)">
+                        <div class="col-md-12 p-l-r-zero display-flex">
+                            <div class="col-md-9 p-l-r-zero">
+                                <div class="">
+                                    <a class="rest-name nowrap d-b">{{ rest.rest_name }}</a>
+                                    <div class="rest-description">
+                                        <div class="clr-89959B nowrap" title="{{ rest.cuisines }}">{{ rest.cuisines }}</div>
+                                        <div class="clr-89959B nowrap">Cost ({{ rest.cost_symbol }}){{ rest.avg_cost }}
+                                            for two</div>
+                                        <div class="nowrap" *ngIf="rest.has_online">Accepts Online order</div>
+                                        <div class="nowrap" *ngIf="rest.has_online && rest.has_tbl"> & </div>
+                                        <div class="nowrap" *ngIf="rest.has_tbl">Accepts Dining</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 p-r-zero">
+                                <div class="res-rating" [ngStyle]="{'background-color': rest.rating_color}">
+                                    {{ rest.agreegate }}
+                                </div>
+                                <div class="clr-89959B col-md-12 votes">
+                                    {{ rest.rating_text }}
+                                </div>
+                                <div class="clr-89959B col-md-12 votes">
+                                    {{ rest.votes }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>                
+            </ng-container>
+            <div *ngIf="!restaurantList || restaurantList.length == 0">
+                No data available
+            </div>            
+        </div>
+        <div class="col-md-12 p-b-20px p-t-10px row" *ngIf="responseData">
+                <div class="col-md-4">
+
+                </div>
+                <div class="col-md-4">
+                    Showing {{ responseData.start_index }} - {{ responseData.end_index }} of {{ responseData.count }}
+                </div>
+                <div class="col-md-4 t-a-r f-s-20px">
+                    <span [ngClass]="responseData.has_previous ? 'active' : 'unactive'" class="m-r-10px"
+                     (click)="getPage(1)" title="First page">
+                        <i class="fa fa-angle-double-left"></i>
+                    </span>
+                    <span [ngClass]=" responseData.has_previous ? 'active' : 'unactive'" 
+                        (click)="getPage(responseData.page - 1)" class="m-r-10px" title="Previous page">
+                        <i class="fa fa-angle-left"></i>
+                    </span>
+                    <span [ngClass]=" responseData.has_next ? 'active' : 'unactive' " (click)="getPage(responseData.page + 1)" 
+                            class="m-r-10px" title="Next page">
+                        <i class="fa fa-angle-right"></i>
+                    </span>
+                    <span [ngClass]=" responseData.has_next ? 'active' : 'unactive' " (click)="getPage(responseData.last_page)" 
+                            class="m-r-10px" title="Last page">
+                        <i class="fa fa-angle-double-right"></i>
+                    </span>
+                </div>
+            </div>
+    </div>
+</div>
+
+<div class="slider-div pos-fixed col-md-6"
+    [ngClass]="openPopup ? 'slide-div-visible' : 'slide-div-default'" *ngIf="restuarantLocation">
+    <div class="col-md-12 p-zero">                                
+        <div class="col-md-12 m-t-10px">
+            <div class="col-md-12 row">
+                <h4 class="col-md-4">Location Details : </h4>
+                <span class="col-md-8 f-s-20px c-febf34">{{ restaurantDetail.rest_name }}</span>
+                <span class="close-icon" (click)="openPopup = !openPopup"><i class="fa fa-close"></i></span>
+            </div>
+            <div class="col-md-12 row">               
+                <div class="col-md-12 row">
+                    <div class="col-md-3"><b>Address : </b></div>
+                    <div class="col-md-9">{{ restuarantLocation.address }}</div>
+                </div>
+                <div class="col-md-12 row">
+                    <div class="col-md-3"><b>City : </b></div>
+                    <div class="col-md-9">{{ restuarantLocation.city }}</div>
+                </div>
+                <div class="col-md-12 row">
+                    <div class="col-md-3"><b>Country Code : </b></div>
+                    <div class="col-md-9">{{ restuarantLocation.country_code }}</div>
+                </div>
+                <div class="col-md-12 row">
+                    <div class="col-md-3"><b>Locality : </b></div>
+                    <div class="col-md-9">{{ restuarantLocation.locality }}</div>
+                </div>
+                <div class="col-md-12 row">
+                    <div class="col-md-3"><b>Locality Verbose : </b></div>
+                    <div class="col-md-9">{{ restuarantLocation.locality_verbose }}</div>
+                </div>
+                <!-- <button class="col-md-2 b-1px-solid m-l-5px"
+                    (click)="openPopup = !openPopup">Close</button> -->
+            </div>
+        </div>
+        <div class="col-md-12">
+            <h4>Map</h4>
+        </div>
+        <agm-map [latitude]="restuarantLocation.latitude" [longitude]="restuarantLocation.longitude">
+            <agm-marker [latitude]="restuarantLocation.latitude" [longitude]="restuarantLocation.longitude"></agm-marker>
+        </agm-map>
+    </div>
+</div>
