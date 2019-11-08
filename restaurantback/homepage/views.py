@@ -12,6 +12,7 @@ class RestaurantViewset(viewsets.ModelViewSet, RestaurantController):
 	queryset = RestaurantDetails.objects.all()
 	serializer_class = RestaurantListSerializer
 
+	# to save data of restaurant using csv file
 	@action(detail=False, url_path="save-list")
 	def save_restaurant_list(self, request):
 		try:
@@ -21,6 +22,7 @@ class RestaurantViewset(viewsets.ModelViewSet, RestaurantController):
 			exception_detail(e)
 			return Response({'status': 'error'}, status=status.HTTP_300_MULTIPLE_CHOICES)
 
+	# to get restaurant list to display
 	@action(detail=False, url_path="get-list", methods=['POST'])
 	def get_restaurant_list(self, request):
 		try:
@@ -30,6 +32,7 @@ class RestaurantViewset(viewsets.ModelViewSet, RestaurantController):
 			exception_detail(e)
 			return Response({'success': 'False'}, status=status.HTTP_300_MULTIPLE_CHOICES)
 
+	# to get location of the restaurant
 	@action(detail=False, url_path="get-location", methods=['GET'])
 	def get_restaurant_location(self, request):
 		try:
