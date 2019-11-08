@@ -297,8 +297,6 @@ class RestaurantController():
                 cuisines_map_dict[map_data.get('rest_id')].append(map_data.get('cuisine_name'))
             for val in rest_data:
                 val['cuisines'] = ', '.join(cuisines_map_dict.get(val.get('id'), []))
-            import pdb
-            pdb.set_trace()
             data = {
                 'page': page_no,
                 'count': pagi.count,
