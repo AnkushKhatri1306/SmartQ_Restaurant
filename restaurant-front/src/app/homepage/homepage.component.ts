@@ -17,8 +17,10 @@ export class HomepageComponent implements OnInit {
   searchStr: any;
   page:any;
   per_page:any;
-  sortSelected:any = "";
+  sortSelected:any = "agreegate";
+  aesc: boolean = true;
   openPopup: boolean = false;
+  pageNumber: any;
 
   ngOnInit() {
     this.getRestaurantListData();
@@ -71,4 +73,20 @@ export class HomepageComponent implements OnInit {
     })
   }
 
+  changeOrder(value){
+    let sortvalue = this.sortSelected;
+    if(!value){
+        this.sortSelected = 'not ' + this.sortSelected;        
+    }
+    this.aesc = value;
+    this.getRestaurantListData();
+    this.sortSelected = sortvalue;
+  }
+
+  pageRequested(){
+    if(typeof(this.pageNumber) == 'number' && this.pageNumber > 0 && this.pageNumber <= this.responseData.last_page){
+      this.page = this.pageNumber;
+    }
+    this.getRestaurantListData();
+  }
 }

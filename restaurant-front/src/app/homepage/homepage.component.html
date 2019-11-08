@@ -5,12 +5,20 @@
     </div>
     <div class="col-md-12 content-div">
         <div class="col-md-12 bg-c-F9F9F9 search-div row">
-            <div class="col-md-10">
+            <div class="col-md-8">
                 <input type="search" [(ngModel)]="searchtext" placeholder="Search for restaurants or cuisines..."
                     class="col-md-12 search-box">
-                <span class="search-icon" title="search" (click)="searchRestaurant(searchtext)"><i class="fa fa-search p-absolute m-t-6px"></i></span>
+                <span class="search-icon" title="search" (click)="searchRestaurant(searchtext)"><i class="fa fa-search p-absolute m-t-11px"></i></span>
             </div>
-            <button class="col-md-1 m-r-10px" (click)="searchRestaurant(searchtext)">Search</button>            
+            <button class="col-md-1 m-r-10px" (click)="searchRestaurant(searchtext)">Search</button>      
+            <select  class='form-control col-md-2' [(ngModel)]="sortSelected"
+                    (change)="getRestaurantListData()" [value]='agreegate'>
+                    <option value='agreegate'>Rating</option>
+                    <option value='votes'>Votes</option>
+                    <option value='avg_cost'>Average cost for two</option>
+            </select>      
+            <span *ngIf="aesc" class="h-p aesc-sym" (click)="changeOrder(false)"><i class="fa fa-arrow-up"></i></span>
+            <span *ngIf="!aesc" class="h-p aesc-sym" (click)="changeOrder(true)"><i class="fa fa-arrow-down"></i></span>
         </div>
         <div class="rest-content col-md-12 row p-zero">
             <ng-container *ngIf="restaurantList">
@@ -50,12 +58,14 @@
             </div>            
         </div>
         <div class="col-md-12 p-b-20px p-t-10px row" *ngIf="responseData">
+                
                 <div class="col-md-4">
-
-                </div>
+                    Page : {{ responseData.page }} of {{ responseData.last_page }}
+                </div>      
                 <div class="col-md-4">
                     Showing {{ responseData.start_index }} - {{ responseData.end_index }} of {{ responseData.count }}
-                </div>
+                    <input class="col-md-2" (change)="changePageDetect()" title="press enter after number" [(ngModel)]="pageNumber" (keyup.enter)="pageRequested()" type="number">
+                </div>          
                 <div class="col-md-4 t-a-r f-s-20px">
                     <span [ngClass]="responseData.has_previous ? 'active' : 'unactive'" class="m-r-10px"
                      (click)="getPage(1)" title="First page">

@@ -29,7 +29,7 @@
     font-size: 1em;
 }
 .search-box{
-    height: 30px;
+    height: 38px;
     border: 1px solid #bfbfbf;
     padding-right: 35px;
 }
@@ -47,8 +47,8 @@
 .p-absolute{
     position: absolute;
 }
-.m-t-6px{
-    margin-top: 6px;
+.m-t-11px{
+    margin-top: 11px;
 }
 .m-l-15px{
     margin-left: 15px;
@@ -189,3 +189,8 @@ agm-map {
     color: #febf34;
 }
 
+.aesc-sym{
+    font-size: 25px;
+    padding-left: 5px;
+    padding-top: 5px;
+}
